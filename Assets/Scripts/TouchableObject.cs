@@ -1,16 +1,55 @@
+using System;
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class TouchableObject : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private bool hasBeenTouched = false;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Collider coll;
+
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
+    void Awake()
     {
-        
+        if(rb == null | coll == null)
+        {
+            Debug.Log($"{gameObject.name} at location " +
+            $"{transform.position.x},{transform.position.y},{transform.position.z} " +
+            "is missing some componets. Please check it out." );
+            Destroy(this.gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        startRotation = transform.rotation;
+        startPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < GlobalRefs.deadZone)
+        {
+            transform.position = startPosition;
+            transform.rotation = startRotation;
+
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+
+
+        }
+    }
+
+    public void TouchTheObject(float force, Vector3 direction)
+    {
+        hasBeenTouched = true;
+        rb.AddForce(direction.normalized * force, ForceMode.Impulse);
+
+        // Apply torque (rotational force)
+        rb.AddTorque(direction.normalized * force, ForceMode.Impulse);
+
+        Debug.Log("Force and spin applied, Overlord Lace dood!");
     }
 }
