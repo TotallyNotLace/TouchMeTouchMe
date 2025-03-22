@@ -5,5 +5,5 @@ using Unity;
 
 public static class GlobalRefs
 {
-    public const int deadZone = -5;
+    public const int deadZone = -15;
 }

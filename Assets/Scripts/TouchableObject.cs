@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TouchableObject : MonoBehaviour
 {
+
     [SerializeField] private bool hasBeenTouched = false;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider coll;
@@ -36,9 +37,6 @@ public class TouchableObject : MonoBehaviour
 
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-
-
-
         }
     }
 
@@ -47,9 +45,11 @@ public class TouchableObject : MonoBehaviour
         hasBeenTouched = true;
         rb.AddForce(direction.normalized * force, ForceMode.Impulse);
 
-        // Apply torque (rotational force)
         rb.AddTorque(direction.normalized * force, ForceMode.Impulse);
+    }
 
-        Debug.Log("Force and spin applied, Overlord Lace dood!");
+    public bool IsObjectTouched()
+    {
+        return hasBeenTouched;
     }
 }

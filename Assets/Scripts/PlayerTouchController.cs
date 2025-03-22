@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class PlayerTouchController : MonoBehaviour
@@ -5,6 +6,13 @@ public class PlayerTouchController : MonoBehaviour
     [Header("Random Force Modifiers")]
     [SerializeField] private float randomForceMinimum;
     [SerializeField] private float randomForceMaximum;
+
+    [Header("Properties")]
+    [SerializeField] private int pointsPerTouch = 1;
+
+    [Header("Object References")]
+    [SerializeField] private ScoreCanvas scoreCanvas;
+
 
     // Update is called once per frame
     void Update()
@@ -35,15 +43,30 @@ public class PlayerTouchController : MonoBehaviour
         {
             Debug.Log("Hit: " + hit.collider.name);
             TouchableObject touchable = hit.collider.gameObject.GetComponent<TouchableObject>();
-            if (touchable != null) 
+            if (touchable != null)
             {
-                touchable.TouchTheObject(GenerateRandomForce(), GenerateRandomDirection());
+                TouchAnObject(touchable);
             }
         }
         else
         {
             Debug.Log("No hit detected within 6.66 units.");
         }
+    }
+
+    private void TouchAnObject(TouchableObject touchable)
+    {
+        if(!touchable.IsObjectTouched())
+        {
+            ScorePoints();
+        }
+
+        touchable.TouchTheObject(GenerateRandomForce(), GenerateRandomDirection());
+    }
+
+    private void ScorePoints()
+    {
+        scoreCanvas.AddPoints(pointsPerTouch);
     }
 
     private Vector3 GenerateRandomDirection()
