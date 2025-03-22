@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class TouchableObject : MonoBehaviour
 {
 
@@ -43,6 +44,7 @@ public class TouchableObject : MonoBehaviour
     public void TouchTheObject(float force, Vector3 direction)
     {
         hasBeenTouched = true;
+        rb.isKinematic = false;
         rb.AddForce(direction.normalized * force, ForceMode.Impulse);
 
         rb.AddTorque(direction.normalized * force, ForceMode.Impulse);
