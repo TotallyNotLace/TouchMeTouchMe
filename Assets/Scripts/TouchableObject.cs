@@ -31,7 +31,7 @@ public class TouchableObject : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < GlobalRefs.deadZone)
+        if (transform.position.y < GlobalRefs.DEADZONE)
         {
             transform.position = startPosition;
             transform.rotation = startRotation;
